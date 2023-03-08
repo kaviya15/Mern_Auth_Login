@@ -1,6 +1,7 @@
 const signup_validation = (req,res,next)=>{
     const {email,password,verify_password} = req.body;
     let error_obj = { success: false, data: {} };
+    console.log("email",email,!email)
     if(!email || !password || !verify_password){
         return res.status(400).json({
           error: "please enter all the details",
@@ -22,6 +23,16 @@ const signup_validation = (req,res,next)=>{
            message: "password mismatched ",
            error_obj,
          });
+    }
+
+    /**validate the email */
+    let regex = new RegExp(`[a-z0-9]+@[a-z]+\.[a-z]{2,3}`);
+    if(!regex.test(email)){
+       return res.status(400).json({
+         error: "invalid email format",
+         message: "invalid email format",
+         error_obj,
+       });
     }
     next();
 

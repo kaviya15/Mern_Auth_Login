@@ -1,39 +1,34 @@
 const userservicelayer = require("../service/userService");
+
 const serviceLayer = new userservicelayer();
-class userController {
-  constructor() {
-    console.log(userservicelayer, "userservicelayer");
-    this.serviceLayer = new userservicelayer();
-    console.log(this.serviceLayer.signup, "this.serviceLayer");
+
+
+
+  function sendResp(status,success,data={},error={}){
+    return {
+      status,
+      success,
+      data,
+      error,
+    }
   }
-  async signup(req, res) {
+  async function signup(req, res) {
+    console.log(this)
     try {
       console.log("controller ", req.body);
       console.log(serviceLayer.signup, "func");
       let resp = await serviceLayer.signup(req.body);
       if (resp.success) {
-        return res.json({
-          status: 200,
-          success: true,
-          data: resp,
-          error: {},
-        });
-      } else {
-        return res.json({
-          status: 400,
-          success: false,
-          error: resp.error,
-          data: resp,
-        });
-      }
-    } catch (err) {
-      return res.json({
-        status: 500,
-        success: false,
-        data: {},
-        error: err,
-      });
-    }
+       res.cookie("token",resp.token,{httpOnly:true})
+       return res.json(sendResp(200, true, {email:resp.email,id:resp._id}));
+      } 
+      return  res.json(sendResp(400, false, {}, resp.error));
+    } 
+    catch (err) {
+        return  res.json(sendResp(500, false, {}, err));
+    } 
+  
+    
   }
-}
-module.exports = userController;
+
+module.exports=signup;
