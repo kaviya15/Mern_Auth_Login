@@ -13,14 +13,11 @@ const serviceLayer = new userservicelayer();
     }
   }
   async function signup(req, res) {
-    console.log(this)
     try {
-      console.log("controller ", req.body);
-      console.log(serviceLayer.signup, "func");
       let resp = await serviceLayer.signup(req.body);
       if (resp.success) {
        res.cookie("token",resp.token,{httpOnly:true})
-       return res.json(sendResp(200, true, {email:resp.email,id:resp._id}));
+       return res.json(sendResp(200, true, {email:resp.email}));
       } 
       return  res.json(sendResp(400, false, {}, resp.error));
     } 
@@ -31,4 +28,22 @@ const serviceLayer = new userservicelayer();
     
   }
 
-module.exports=signup;
+  async function login(req,res){
+    try{
+      const resp = await serviceLayer.login(req.body);
+      if(resp.success){
+        res.cookie("token", resp.token, { httpOnly: true });
+        return res.json(
+          sendResp(200, true, { email: resp.email })
+        );
+      }
+      else{
+          return res.json(sendResp(401, false, {}, resp.error));
+      }
+    }
+    catch(err){
+        return res.json(sendResp(500, false, {}, err));
+    }
+  }
+
+module.exports={signup,login};
