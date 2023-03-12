@@ -7,23 +7,17 @@ const check_authenticated  = function(req,res,next){
             return res.status(401).json({
                 error: "unauthorized request",
                 message: "No Token found",
+                success:false
             });
         }
-        try{
-            const verifyToken  = jwt.verify(token,process.env.SECRET);
-            console.log("verfity token",verifyToken)
-        }
-         catch(err){
-            return res.status(401).json({
-            error: err,
-            message: "invalid token",
-            });
-         }
+        const verifyToken  = jwt.verify(token,process.env.SECRET);
+        console.log("verfity token",verifyToken)
     }
     catch(err){
         return res.status(500).json({
           error: err,
           message: "Failed at validation",
+          success: false
         });
     }
     next();

@@ -1,4 +1,4 @@
-const userservicelayer = require("../../service/userService");
+const userservicelayer = require("../service/userService");
 
 const serviceLayer = new userservicelayer();
 
@@ -11,6 +11,10 @@ const serviceLayer = new userservicelayer();
       data,
       error,
     }
+  }
+
+  async function logged_in(req,res){
+    return res.status(200).json({success:true,error:{},message:"logged in"});
   }
   async function signup(req, res) {
     try {
@@ -46,4 +50,4 @@ const serviceLayer = new userservicelayer();
     }
   }
 
-module.exports={signup,login};
+module.exports = { signup, login, logged_in };
