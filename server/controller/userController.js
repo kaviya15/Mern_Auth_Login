@@ -1,4 +1,4 @@
-const userservicelayer = require("../service/userService");
+const userservicelayer = require("../../service/userService");
 
 const serviceLayer = new userservicelayer();
 

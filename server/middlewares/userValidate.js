@@ -1,4 +1,5 @@
 const signup_validation = (req,res,next)=>{
+  console.log("signup middleware called!");
     const {email,password,verify_password} = req.body;
     let error_obj = { success: false, data: {} };
     if(!email || !password || !verify_password){
